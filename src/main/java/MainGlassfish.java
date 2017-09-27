@@ -1,4 +1,3 @@
-package com.crunchify.jsp.servlet;
 
 import java.io.File;
 import org.glassfish.embeddable.CommandResult;
@@ -37,7 +36,6 @@ public class MainGlassfish {
       
         
         //Invocando el Script de Creacion de la base de datos.
-      
 	// Create a scattered web application.
 	ScatteredArchive archive = new ScatteredArchive("myApp",
 	ScatteredArchive.Type.WAR, new File(webappDirLocation));
@@ -46,6 +44,5 @@ public class MainGlassfish {
 	deployer.deploy(archive.toURI());
 
 	}
-
 
 }
