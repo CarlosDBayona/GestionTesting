@@ -27,9 +27,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author Carlos
  */
-public class PrestamoJpaController implements Serializable {
+public class PrestamoDAO implements Serializable {
 
-    public PrestamoJpaController(EntityManagerFactory emf) {
+    public PrestamoDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;

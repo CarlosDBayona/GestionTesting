@@ -27,9 +27,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author Carlos
  */
-public class HerramientaJpaController implements Serializable {
+public class HerramientaDAO implements Serializable {
 
-    public HerramientaJpaController(EntityManagerFactory emf) {
+    public HerramientaDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
