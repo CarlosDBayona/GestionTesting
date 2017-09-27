@@ -15,9 +15,16 @@ import javax.persistence.criteria.Root;
 import Datos.Herramienta;
 import Datos.Prestamo;
 import Datos.Transaccion;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -25,9 +32,7 @@ import javax.persistence.EntityManagerFactory;
  */
 public class TransaccionDAO implements Serializable {
 
-    public TransaccionDAO(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
+    private EntityManager em=null;
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -35,7 +40,7 @@ public class TransaccionDAO implements Serializable {
     }
 
     public void create(Transaccion transaccion) throws PreexistingEntityException, Exception {
-        EntityManager em = null;
+       startOperation();
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -67,12 +72,13 @@ public class TransaccionDAO implements Serializable {
         } finally {
             if (em != null) {
                 em.close();
+                emf.close();
             }
         }
     }
 
     public void edit(Transaccion transaccion) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
+        startOperation();
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -119,12 +125,13 @@ public class TransaccionDAO implements Serializable {
         } finally {
             if (em != null) {
                 em.close();
+                emf.close();
             }
         }
     }
 
     public void destroy(String id) throws NonexistentEntityException {
-        EntityManager em = null;
+        startOperation();
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -150,6 +157,7 @@ public class TransaccionDAO implements Serializable {
         } finally {
             if (em != null) {
                 em.close();
+                emf.close();
             }
         }
     }
@@ -163,7 +171,7 @@ public class TransaccionDAO implements Serializable {
     }
 
     private List<Transaccion> findTransaccionEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
+        startOperation();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Transaccion.class));
@@ -175,20 +183,22 @@ public class TransaccionDAO implements Serializable {
             return q.getResultList();
         } finally {
             em.close();
+            emf.close();
         }
     }
 
     public Transaccion findTransaccion(String id) {
-        EntityManager em = getEntityManager();
+        startOperation();
         try {
             return em.find(Transaccion.class, id);
         } finally {
             em.close();
+            emf.close();
         }
     }
 
     public int getTransaccionCount() {
-        EntityManager em = getEntityManager();
+        startOperation();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Transaccion> rt = cq.from(Transaccion.class);
@@ -197,6 +207,27 @@ public class TransaccionDAO implements Serializable {
             return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
+            emf.close();
+        }
+    }
+    protected void startOperation() { 
+        URI dbUri = null;
+        try {
+            dbUri = new URI(System.getenv("DATABASE_URL")); 
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+            Map<String, String> properties = new HashMap<String, String>();
+            properties.put("javax.persistence.jdbc.url", dbUrl);
+            properties.put("javax.persistence.jdbc.user", username );
+            properties.put("javax.persistence.jdbc.password", password );
+            properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
+            properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+            this.emf = Persistence.createEntityManagerFactory("GestionInventario",properties);
+            this.em = emf.createEntityManager();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(TransaccionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
