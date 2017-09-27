@@ -79,6 +79,6 @@
             <url>http://download.java.net/maven/glassfish</url>
         </pluginRepository>
     </pluginRepositories>
-    <name>petcatalogGlassFish</name>
+    <name>GestionInventario</name>
 </project>
 
