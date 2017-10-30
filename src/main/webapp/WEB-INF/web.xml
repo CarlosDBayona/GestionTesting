@@ -12,11 +12,15 @@
         <servlet-class>com.crunchify.jsp.servlet.HelloCrunchify</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Servlet</servlet-name>
-        <servlet-class>Servlet</servlet-class>
+        <servlet-name>adminControlador</servlet-name>
+        <servlet-class>Servlet.adminControlador</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Hello</servlet-name>
         <url-pattern>/CrunchifyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminControlador</servlet-name>
+        <url-pattern>/adminControlador</url-pattern>
     </servlet-mapping>
 </web-app>
