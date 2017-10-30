@@ -5,16 +5,15 @@
     version="3.0">
     <display-name>CrunchifyJSPServletExample</display-name>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.htm</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-        <welcome-file>default.html</welcome-file>
-        <welcome-file>default.htm</welcome-file>
-        <welcome-file>default.jsp</welcome-file>
+        <welcome-file>newjsp.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>Hello</servlet-name>
         <servlet-class>com.crunchify.jsp.servlet.HelloCrunchify</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>Servlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Hello</servlet-name>
